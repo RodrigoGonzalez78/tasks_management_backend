@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/RodrigoGonzalez78/tasks_management_backend/db"
-	"github.com/RodrigoGonzalez78/tasks_management_backend/models"
+	"github.com/RodrigoGonzalez78/tasks/db"
+	"github.com/RodrigoGonzalez78/tasks/models"
 	"github.com/gorilla/mux"
 )
 
@@ -66,4 +66,15 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	//Remueve totalamente de la tabla
 	db.DB.Unscoped().Delete(&task)
 	w.WriteHeader(http.StatusOK)
+}
+
+func GetTasksByUserHandler(w http.ResponseWriter, r *http.Request) {
+	var tasks []models.Task
+	params := mux.Vars(r)
+	userId := params["userId"]
+
+	// Consulta la base de datos para obtener todas las tareas del usuario con el ID especificado
+	db.DB.Where("user_id = ?", userId).Find(&tasks)
+
+	json.NewEncoder(w).Encode(&tasks)
 }
