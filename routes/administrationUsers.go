@@ -9,13 +9,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
+func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
 	db.DB.Find(&users)
 	json.NewEncoder(w).Encode(&users)
 }
 
-func GetUserHandler(w http.ResponseWriter, r *http.Request) {
+func GetUserById(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	//Extraemos el parametro que nos indica el id de usuario
 	params := mux.Vars(r)
@@ -28,28 +28,11 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	db.DB.Model(&user).Association("Tasks").Find(&user.Tasks)
 
 	json.NewEncoder(w).Encode(&user)
 }
 
-func PostUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user models.User
-
-	json.NewDecoder(r.Body).Decode(&user)
-	userCreated := db.DB.Create(&user)
-	err := userCreated.Error
-
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	json.NewEncoder(w).Encode(&user)
-}
-
-func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteUserById(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	//Extraemos el parametro que nos indica el id de usuario
 	params := mux.Vars(r)

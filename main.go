@@ -22,11 +22,8 @@ func main() {
 	//Ruta home
 	router.HandleFunc("/", routes.HomeHandler)
 
-	//Ruta crud de usuarios
-	router.HandleFunc("/users", routes.GetUsersHandler).Methods("GET")
-	router.HandleFunc("/users/{id}", routes.GetUserHandler).Methods("GET")
-	router.HandleFunc("/users", routes.PostUserHandler).Methods("POST")
-	router.HandleFunc("/users/{id}", routes.DeleteUserHandler).Methods("DELETE")
+	router.HandleFunc("/login", routes.Login).Methods("POST")
+	router.HandleFunc("/signup", routes.SignUp).Methods("POST")
 
 	//Rutas del crud de tareas
 	router.HandleFunc("/tasks", routes.GetTaksHandler).Methods("GET")
