@@ -8,7 +8,7 @@ import (
 // Verifica si existe un usuario con ese email
 func CheckExistUser(email string) (bool, error) {
 	var user models.User
-	result := DB.Where("email = ?", email).First(&user)
+	result := dbConnection.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
 			return false, nil

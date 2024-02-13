@@ -9,7 +9,7 @@ import (
 func CheckLogin(email, password string) (models.User, bool, error) {
 	// Buscar el usuario por su correo electrónico
 	var user models.User
-	result := DB.Where("email = ?", email).First(&user)
+	result := dbConnection.Where("email = ?", email).First(&user)
 
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {

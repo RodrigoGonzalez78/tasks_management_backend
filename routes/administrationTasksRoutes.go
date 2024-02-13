@@ -9,18 +9,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetTaksHandler(w http.ResponseWriter, r *http.Request) {
-	var tasks []models.Task
-	db.DB.Find(&tasks)
+func GetAllTaks(w http.ResponseWriter, r *http.Request) {
+	tasks := db.GetAllTaks()
 	json.NewEncoder(w).Encode(&tasks)
 }
 
-func GetTaskHandler(w http.ResponseWriter, r *http.Request) {
+func GetTaskById(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	//Extraemos el parametro que nos indica el id de usuario
 	params := mux.Vars(r)
 
-	db.DB.First(&task, params["id"])
+	task = db.GetTaskById(params["id"])
 
 	//Verificamos si existe el id en la tabla
 	//Golang devuelve 0 por defecto, es decir todos los campos con ZERO value
@@ -32,12 +31,12 @@ func GetTaskHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&task)
 }
 
-func PostTaskHandler(w http.ResponseWriter, r *http.Request) {
+func CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 
 	json.NewDecoder(r.Body).Decode(&task)
-	taskCreated := db.DB.Create(&task)
-	err := taskCreated.Error
+
+	err := db.CreateTask(&task)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -48,12 +47,12 @@ func PostTaskHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&task)
 }
 
-func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTaskById(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	//Extraemos el parametro que nos indica el id de usuario
 	params := mux.Vars(r)
 
-	db.DB.First(&task, params["id"])
+	task = db.GetTaskById(params["id"])
 
 	if task.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -64,6 +63,6 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	//db.DB.Delete(&task) //igual la libreria se encarga de no mostrar mas el elemento
 
 	//Remueve totalamente de la tabla
-	db.DB.Unscoped().Delete(&task)
+	db.DeleteTask(&task)
 	w.WriteHeader(http.StatusOK)
 }
