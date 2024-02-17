@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/RodrigoGonzalez78/tasks_management_backend/db"
+	"github.com/RodrigoGonzalez78/tasks_management_backend/middleware"
 	"github.com/RodrigoGonzalez78/tasks_management_backend/routes"
 	"github.com/gorilla/mux"
 )
@@ -21,20 +22,18 @@ func main() {
 	//Ruta home
 	router.HandleFunc("/", routes.HomeHandler)
 
-	//Autenticacion
+	//Manejo de la cuenta
 	router.HandleFunc("/login", routes.Login).Methods("POST")
 	router.HandleFunc("/signup", routes.SignUp).Methods("POST")
-
-	//Rutas para administrar usuarios
-	router.HandleFunc("/users", routes.GetAllUsers).Methods("GET")
-	router.HandleFunc("/users/{id}", routes.GetUserById).Methods("GET")
-	router.HandleFunc("/users/{id}", routes.DeleteTaskById).Methods("DELETE")
+	router.HandleFunc("/delete-accout", middleware.CheckJwt(routes.DeleteUserAccout)).Methods("DELETE")
+	router.HandleFunc("/update-user", middleware.CheckJwt(routes.UpdateUser)).Methods("PUT")
 
 	//Rutas para administrar tareas
-	router.HandleFunc("/tasks", routes.GetAllTaks).Methods("GET")
-	router.HandleFunc("/tasks/{id}", routes.GetTaskById).Methods("GET")
-	router.HandleFunc("/tasks", routes.CreateTask).Methods("POST")
-	router.HandleFunc("/tasks/{id}", routes.DeleteTaskById).Methods("DELETE")
+	router.HandleFunc("/tasks", middleware.CheckJwt(routes.GetAllTaksByUser)).Methods("GET")
+	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.GetTaskById)).Methods("GET")
+	router.HandleFunc("/tasks", middleware.CheckJwt(routes.CreateTask)).Methods("POST")
+	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.DeleteTaskById)).Methods("DELETE")
+	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.UpdateTask)).Methods("PUT")
 
 	//Iniciamos el servidor
 	http.ListenAndServe(":3000", router)

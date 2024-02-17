@@ -35,17 +35,17 @@ func CreateToken(t models.User) (string, error) {
 
 // valores para todos los endpoints
 var Email string
-var IDUser string
+var IDUser uint
 
 // Proceso para extraer los datos del token
-func ProcessToken(tk string) (*models.Claim, bool, string, error) {
+func ProcessToken(tk string) (*models.Claim, bool, uint, error) {
 
 	claim := &models.Claim{}
 
 	splitToken := strings.Split(tk, "Bearer")
 
 	if len(splitToken) != 2 {
-		return claim, false, "", errors.New("formato de token invalido")
+		return claim, false, 0, errors.New("formato de token invalido")
 	}
 
 	tk = strings.TrimSpace(splitToken[1])
@@ -60,14 +60,15 @@ func ProcessToken(tk string) (*models.Claim, bool, string, error) {
 
 		if found {
 			Email = claim.Email
+			IDUser = claim.ID
 		}
 
 		return claim, found, IDUser, nil
 	}
 
 	if tkn.Valid {
-		return claim, false, "", errors.New("token invalido")
+		return claim, false, 0, errors.New("token invalido")
 	}
 
-	return claim, false, "", err
+	return claim, false, 0, err
 }
