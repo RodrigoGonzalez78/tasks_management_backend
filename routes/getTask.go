@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetTaskById(w http.ResponseWriter, r *http.Request) {
+func GetTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	//Extraemos el parametro que nos indica el id de usuario
 	params := mux.Vars(r)

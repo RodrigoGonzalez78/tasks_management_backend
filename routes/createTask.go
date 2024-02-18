@@ -9,17 +9,27 @@ import (
 	"github.com/RodrigoGonzalez78/tasks_management_backend/models"
 )
 
+// Crea una tarea nueva
 func CreateTask(w http.ResponseWriter, r *http.Request) {
-	var task models.Task
+	w.Header().Set("Content-Type", "application/json")
 
-	json.NewDecoder(r.Body).Decode(&task)
+	var task models.Task
+	err := json.NewDecoder(r.Body).Decode(&task)
+	if err != nil {
+		http.Error(w, "Error al decodificar la solicitud: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Verificar que title y description no estén vacíos
+	if task.Title == "" || task.Description == "" {
+		http.Error(w, "El título y la descripción son obligatorios", http.StatusBadRequest)
+		return
+	}
 
 	task.UserId = jwtMetods.IDUser
-	err := db.CreateTask(&task)
-
+	err = db.CreateTask(&task)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(err.Error()))
+		http.Error(w, "Error al crear la tarea: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 

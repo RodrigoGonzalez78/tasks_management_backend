@@ -9,41 +9,41 @@ import (
 	"github.com/RodrigoGonzalez78/tasks_management_backend/models"
 )
 
+// UpdateUserData actualiza los datos del usuario.
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	user := db.GetUserById(jwtMetods.IDUser)
-
-	//Verificamos si existe el id en la tabla
-	//Golang devuelve 0 por defecto, es decir todos los campos con ZERO value
-	if user.ID == 0 {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	// Decodificar la nueva información del usuario del cuerpo de la solicitud
-	var updatedUser models.User
-	err := json.NewDecoder(r.Body).Decode(&updatedUser)
+	var user models.User
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, "Error al decodificar la solicitud: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Actualizar la información del usuario
-	user.FirstName = updatedUser.FirstName
-	user.LastName = updatedUser.LastName
-	user.Email = updatedUser.Email
-	user.Password = updatedUser.Password
-	// También puedes actualizar otros campos según sea necesario
+	// Verificar que los campos no estén vacíos
+	if user.FirstName == "" || user.LastName == "" {
+		http.Error(w, "Todos los campos son obligatorios", http.StatusBadRequest)
+		return
+	}
 
-	// Guardar el usuario actualizado en la base de datos
-	err = db.UpdateUser(&user)
+	// Verificar si el usuario existe en la base de datos
+	existingUser := db.GetUserById(jwtMetods.IDUser)
 
-	if err != nil {
+	if existingUser.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	// Actualizar los datos del usuario
+	existingUser.FirstName = user.FirstName
+	existingUser.LastName = user.LastName
+
+	// Guardar los datos actualizados del usuario en la base de datos
+	if err := db.UpdateUser(&existingUser); err != nil {
 		http.Error(w, "Error al actualizar el usuario: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	// Responder con el usuario actualizado
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(existingUser)
 }

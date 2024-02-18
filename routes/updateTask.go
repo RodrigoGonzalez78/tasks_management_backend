@@ -16,8 +16,8 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	task := db.GetTaskById(params["id"])
 
-	//Verificamos si existe el id en la tabla
-	//Golang devuelve 0 por defecto, es decir todos los campos con ZERO value
+	// Verificar si existe el ID en la tabla
+	// Golang devuelve 0 por defecto, es decir, todos los campos con ZERO value
 	if task.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -31,6 +31,12 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Verificar que title y description no estén vacíos
+	if updatedTask.Title == "" || updatedTask.Description == "" {
+		http.Error(w, "El título y la descripción son obligatorios", http.StatusBadRequest)
+		return
+	}
+
 	// Actualizar la información de la tarea
 	task.Title = updatedTask.Title
 	task.Description = updatedTask.Description
@@ -38,7 +44,6 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	// Guardar la tarea actualizada en la base de datos
 	err = db.UpdateTask(&task)
-
 	if err != nil {
 		http.Error(w, "Error al actualizar la tarea: "+err.Error(), http.StatusInternalServerError)
 		return

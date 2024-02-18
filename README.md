@@ -1,5 +1,21 @@
-#Rest api para gestionar tareas
+# Rest api para gestionar tareas
 
-Permite gestionar usuario y tareas para cada usuario.
 
-Con gorilla mux y gorm, utilsando como base de datos posgret sql
+## Como probar las rutas:
+
+# /signup
+
+{
+  "email":"rodrick@gmail.com",
+  "password":"123456789"
+}
+
+
+# /login
+
+{
+  "email":"rodrick@gmail.com",
+  "password":"123456789"
+}
+
+

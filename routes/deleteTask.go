@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func DeleteTaskById(w http.ResponseWriter, r *http.Request) {
+func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 
 	//Extraemos el parametro que nos indica el id de usuario
@@ -21,10 +21,6 @@ func DeleteTaskById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Cambia el valor de deleted_at, no elmina el elemento en si
-	//db.DB.Delete(&task) //igual la libreria se encarga de no mostrar mas el elemento
-
-	//Remueve totalamente de la tabla
 	db.DeleteTask(&task)
 	w.WriteHeader(http.StatusOK)
 }

@@ -27,12 +27,13 @@ func main() {
 	router.HandleFunc("/signup", routes.SignUp).Methods("POST")
 	router.HandleFunc("/delete-accout", middleware.CheckJwt(routes.DeleteUserAccout)).Methods("DELETE")
 	router.HandleFunc("/update-user", middleware.CheckJwt(routes.UpdateUser)).Methods("PUT")
+	router.HandleFunc("/update-password", middleware.CheckJwt(routes.UpdateUserPassword)).Methods("PUT")
 
 	//Rutas para administrar tareas
 	router.HandleFunc("/tasks", middleware.CheckJwt(routes.GetAllTaksByUser)).Methods("GET")
-	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.GetTaskById)).Methods("GET")
+	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.GetTask)).Methods("GET")
 	router.HandleFunc("/tasks", middleware.CheckJwt(routes.CreateTask)).Methods("POST")
-	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.DeleteTaskById)).Methods("DELETE")
+	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.DeleteTask)).Methods("DELETE")
 	router.HandleFunc("/tasks/{id}", middleware.CheckJwt(routes.UpdateTask)).Methods("PUT")
 
 	//Iniciamos el servidor

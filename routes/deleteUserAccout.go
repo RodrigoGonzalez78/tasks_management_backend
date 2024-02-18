@@ -25,11 +25,6 @@ func DeleteUserAccout(w http.ResponseWriter, r *http.Request) {
 		db.DeleteTask(&v)
 	}
 
-	//Cambia el valor de deleted_at, no elmina el elemento en si
-	//db.DB.Delete(&user) igual la libreria se encarga de no mostrar mas el elemento
-
-	//Remueve totalamente de la tabla
 	db.DeleteUser(user)
-
 	w.WriteHeader(http.StatusOK)
 }

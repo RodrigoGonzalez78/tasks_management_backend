@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var DSN = "user=postgres password=12345678 dbname=taskM host=172.17.0.2 port=5432 sslmode=disable"
+var DSN = "user=postgres password=12345678 dbname=taskM host=localhost port=5432 sslmode=disable"
 
 // Conexion de a la base de datos
 var dbConnection *gorm.DB
@@ -26,8 +26,8 @@ func DBConnection() {
 
 }
 
+// Se crean las tablas users y task
 func Migration() {
-	//Se crean las tablas users y task
 	dbConnection.AutoMigrate(models.User{})
 	dbConnection.AutoMigrate(models.Task{})
 }
