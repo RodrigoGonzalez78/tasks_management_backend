@@ -3,9 +3,11 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
 
 	"github.com/RodrigoGonzalez78/tasks_management_backend/db"
 	"github.com/RodrigoGonzalez78/tasks_management_backend/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func SignUp(w http.ResponseWriter, r *http.Request) {
@@ -15,6 +17,14 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, "Error al decodificar la solicitud: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Verificar el formato del correo electrónico
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+
+	if !emailRegex.MatchString(user.Email) {
+		http.Error(w, "Formato de correo electrónico inválido", http.StatusBadRequest)
 		return
 	}
 
@@ -30,6 +40,20 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Verificar si la contraseña cumple con los criterios (por ejemplo, longitud mínima)
+	if len(user.Password) < 8 {
+		http.Error(w, "La contraseña debe tener al menos 8 caracteres", http.StatusBadRequest)
+		return
+	}
+
+	// Hash de la contraseña
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Error al generar el hash de la contraseña: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user.Password = string(hashedPassword)
+
 	// Crear el usuario en la base de datos
 	if err := db.CreateUser(&user); err != nil {
 		http.Error(w, "Error al crear el usuario: "+err.Error(), http.StatusInternalServerError)
@@ -38,5 +62,4 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 	// Devolver el usuario creado como respuesta
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
 }
