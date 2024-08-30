@@ -83,6 +83,3 @@ curl -X POST http://tudominio.com/login -H "Content-Type: application/json" -d '
 - Todos los endpoints de la API requieren que las solicitudes estén formateadas en JSON.
 - Las respuestas exitosas están acompañadas de un token JWT, que se debe usar para autenticar solicitudes posteriores a otros endpoints de la API.
 
---- 
-
-Esta estructura mejora la legibilidad y proporciona una visión clara de los endpoints y sus usos, lo cual es útil para cualquier desarrollador que quiera interactuar con tu API.
