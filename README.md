@@ -1,6 +1,4 @@
-Aquí tienes una versión mejorada de la documentación para tu API REST de gestión de tareas/notas:
 
----
 
 # API REST para Gestión de Tareas/Notas
 
