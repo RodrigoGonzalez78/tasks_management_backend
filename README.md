@@ -7,7 +7,7 @@
   "email":"ejemplo@gmail.com",
   "password":"123456789"
 }
-
+```
 
 
 ## Registro
