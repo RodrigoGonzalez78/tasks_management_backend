@@ -157,15 +157,6 @@ Permite a un usuario autenticado actualizar sus datos personales, como su nombre
 }
 ```
 
-#### Lógica del Endpoint:
-1. Decodifica el cuerpo de la solicitud para obtener los datos del usuario.
-2. Verifica que los campos `first_name` y `last_name` no estén vacíos.
-3. Busca al usuario autenticado en la base de datos usando `jwtMetods.IDUser`.
-4. Si el usuario no existe, responde con un `404 Not Found`.
-5. Actualiza los campos del usuario con los nuevos valores proporcionados.
-6. Guarda los cambios en la base de datos.
-7. Devuelve el usuario actualizado en caso de éxito (`200 OK`).
-
 ### Actualizar Contraseña del Usuario
 
 - **URL:** `/update-password`
@@ -207,13 +198,6 @@ Este endpoint permite a un usuario autenticado actualizar su contraseña de form
   "message": "Contraseña actualizada correctamente"
 }
 ```
-
-#### Lógica del Endpoint:
-1. Decodifica el cuerpo de la solicitud para obtener la nueva contraseña.
-2. Verifica que el usuario autenticado existe en la base de datos usando `jwtMetods.IDUser`.
-3. Genera un hash seguro para la nueva contraseña utilizando `bcrypt`.
-4. Actualiza la contraseña en la base de datos.
-5. Devuelve un mensaje de éxito si la operación es exitosa (`200 OK`).
 
 ---
 
@@ -288,14 +272,138 @@ No se requiere un cuerpo para esta solicitud.
 }
 ```
 
-#### Lógica del Endpoint:
-1. Extrae el parámetro `id` de la URL.
-2. Busca la tarea en la base de datos utilizando `db.GetTaskById`.
-3. Si no se encuentra, responde con un `404 Not Found`.
-4. Devuelve los detalles de la tarea si es encontrada (`200 OK`).
+---
+
+### Crear una Nueva Tarea
+
+- **URL:** `/tasks`
+- **Método:** `POST`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Este endpoint permite crear una nueva tarea asociada al usuario autenticado.
+
+#### Cuerpo de la Solicitud:
+```json
+{
+  "title": "string",
+  "description": "string"
+}
+```
+
+- **title:** Título de la tarea (obligatorio).
+- **description:** Descripción de la tarea (obligatorio).
+
+#### Respuestas:
+
+| Código | Descripción                                               |
+|--------|-----------------------------------------------------------|
+| 200    | Tarea creada exitosamente.                                |
+| 400    | Error en la solicitud (formato inválido o campos vacíos). |
+
+#### Ejemplo de Cuerpo de la Solicitud:
+```json
+{
+  "title": "Comprar alimentos",
+  "description": "Comprar frutas, verduras y leche"
+}
+```
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "id": 1,
+  "title": "Comprar alimentos",
+  "description": "Comprar frutas, verduras y leche",
+  "done": false,
+  "user_id": 1,
+  "created_at": "2024-01-01T12:00:00Z",
+  "updated_at": "2024-01-01T12:00:00Z"
+}
+```
 
 ---
 
+### Eliminar una Tarea
+
+- **URL:** `/tasks/{id}`
+- **Método:** `DELETE`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Elimina una tarea específica perteneciente al usuario autenticado.
+
+#### Parámetros de la URL:
+- **id:** ID de la tarea a eliminar.
+
+#### Respuestas:
+
+| Código | Descripción                                 |
+|--------|---------------------------------------------|
+| 200    | Tarea eliminada exitosamente.              |
+| 404    | La tarea especificada no fue encontrada.   |
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "message": "Tarea eliminada exitosamente"
+}
+```
+
+---
+
+### Actualizar una Tarea
+
+- **URL:** `/tasks/{id}`
+- **Método:** `PUT`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Permite actualizar los detalles de una tarea específica.
+
+#### Parámetros de la URL:
+- **id:** ID de la tarea a actualizar.
+
+#### Cuerpo de la Solicitud:
+```json
+{
+  "title": "string",
+  "description": "string"
+}
+```
+
+- **title:** Nuevo título de la tarea (obligatorio).
+- **description:** Nueva descripción de la tarea (obligatorio).
+
+#### Respuestas:
+
+| Código | Descripción                                               |
+|--------|-----------------------------------------------------------|
+| 200    | Tarea actualizada exitosamente.                           |
+| 400    | Error en la solicitud (formato inválido o campos vacíos). |
+| 404    | La tarea especificada no fue encontrada.                  |
+| 500    | Error al guardar la tarea en la base de datos.            |
+
+#### Ejemplo de Cuerpo de la Solicitud:
+```json
+{
+  "title": "Actualizar informe",
+  "description": "Completar la sección de análisis de datos"
+}
+```
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "id": 1,
+  "title": "Actualizar informe",
+  "description": "Completar la sección de análisis de datos",
+  "done": false,
+  "user_id": 1,
+  "created_at": "2024-01-01T12:00:00Z",
+  "updated_at": "2024-01-02T12:00:00Z"
+}
+```
 
 
 ### Notas Adicionales
