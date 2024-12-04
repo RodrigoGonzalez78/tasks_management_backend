@@ -166,6 +166,137 @@ Permite a un usuario autenticado actualizar sus datos personales, como su nombre
 6. Guarda los cambios en la base de datos.
 7. Devuelve el usuario actualizado en caso de éxito (`200 OK`).
 
+### Actualizar Contraseña del Usuario
+
+- **URL:** `/update-password`
+- **Método:** `PUT`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Este endpoint permite a un usuario autenticado actualizar su contraseña de forma segura.
+
+#### Cuerpo de la solicitud:
+
+```json
+{
+  "password": "string"
+}
+```
+
+- **password:** Nueva contraseña del usuario (obligatoria).
+
+#### Respuestas:
+
+| Código | Descripción                                             |
+|--------|---------------------------------------------------------|
+| 200    | La contraseña fue actualizada exitosamente.             |
+| 400    | Error en la solicitud (por ejemplo, el formato es inválido). |
+| 404    | El usuario no fue encontrado en la base de datos.       |
+| 500    | Error interno al generar el hash o actualizar la base de datos. |
+
+#### Ejemplo de Cuerpo de la Solicitud:
+```json
+{
+  "password": "nuevaContraseñaSegura123"
+}
+```
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "message": "Contraseña actualizada correctamente"
+}
+```
+
+#### Lógica del Endpoint:
+1. Decodifica el cuerpo de la solicitud para obtener la nueva contraseña.
+2. Verifica que el usuario autenticado existe en la base de datos usando `jwtMetods.IDUser`.
+3. Genera un hash seguro para la nueva contraseña utilizando `bcrypt`.
+4. Actualiza la contraseña en la base de datos.
+5. Devuelve un mensaje de éxito si la operación es exitosa (`200 OK`).
+
+---
+
+### Obtener Todas las Tareas del Usuario
+
+- **URL:** `/tasks`
+- **Método:** `GET`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Devuelve una lista de todas las tareas asociadas al usuario autenticado.
+
+#### Cuerpo de la solicitud:
+No se requiere un cuerpo para esta solicitud.
+
+#### Respuestas:
+
+| Código | Descripción                                           |
+|--------|-------------------------------------------------------|
+| 200    | Lista de tareas recuperada exitosamente.              |
+| 404    | No se encontraron tareas para el usuario autenticado. |
+
+#### Ejemplo de Respuesta:
+```json
+[
+  {
+    "id": 1,
+    "title": "Tarea 1",
+    "description": "Descripción de la tarea 1",
+    "done": false,
+    "user_id": 1,
+    "created_at": "2024-01-01T12:00:00Z",
+    "updated_at": "2024-01-01T12:00:00Z"
+  }
+]
+```
+
+---
+
+### Obtener una Tarea Específica
+
+- **URL:** `/tasks/{id}`
+- **Método:** `GET`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Devuelve los detalles de una tarea específica perteneciente al usuario autenticado.
+
+#### Parámetros de la URL:
+- **id:** ID de la tarea a recuperar.
+
+#### Cuerpo de la solicitud:
+No se requiere un cuerpo para esta solicitud.
+
+#### Respuestas:
+
+| Código | Descripción                                            |
+|--------|--------------------------------------------------------|
+| 200    | Detalles de la tarea recuperados exitosamente.         |
+| 404    | La tarea especificada no fue encontrada en la base de datos. |
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "id": 1,
+  "title": "Tarea 1",
+  "description": "Descripción de la tarea 1",
+  "done": false,
+  "user_id": 1,
+  "created_at": "2024-01-01T12:00:00Z",
+  "updated_at": "2024-01-01T12:00:00Z"
+}
+```
+
+#### Lógica del Endpoint:
+1. Extrae el parámetro `id` de la URL.
+2. Busca la tarea en la base de datos utilizando `db.GetTaskById`.
+3. Si no se encuentra, responde con un `404 Not Found`.
+4. Devuelve los detalles de la tarea si es encontrada (`200 OK`).
+
+---
+
+
 
 ### Notas Adicionales
 
