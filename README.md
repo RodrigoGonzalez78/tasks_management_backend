@@ -60,25 +60,6 @@ Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tar
 
 ---
 
-### Ejemplo de Uso
-
-#### Registro
-```bash
-curl -X POST http://tudominio.com/signup -H "Content-Type: application/json" -d '{
-  "email": "ejemplo@gmail.com",
-  "password": "123456789"
-}'
-```
-
-#### Inicio de Sesión
-```bash
-curl -X POST http://tudominio.com/login -H "Content-Type: application/json" -d '{
-  "email": "ejemplo@gmail.com",
-  "password": "123456789"
-}'
-```
-
-
 ### 1. Eliminar cuenta de usuario
 
 - **URL:** `/delete-account`
