@@ -1,6 +1,6 @@
 
 
-# API REST para Gestión de Tareas/Notas
+# API REST para Gestión de Tareas
 
 Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas y notas. A continuación, se describen los endpoints disponibles y los formatos de solicitud y respuesta.
 
@@ -26,9 +26,12 @@ Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tar
 
 **Respuestas:**
 
-- **201 Created:** Usuario creado exitosamente.
-- **400 Bad Request:** Error en el formato del correo, la contraseña no cumple los criterios, o el correo ya está en uso.
-- **500 Internal Server Error:** Error interno al crear el usuario.
+| Código | Descripción                                            |
+|--------|--------------------------------------------------------|
+| 201    |  Usuario creado exitosamente. |
+| 400    |  Error en el formato del correo, la contraseña no cumple los criterios, o el correo ya está en uso. |
+| 500    | Error interno al crear el usuario. |
+
 
 ### 2. Inicio de Sesión
 
@@ -55,14 +58,17 @@ Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tar
   }
   ```
 
-- **400 Bad Request:** Error en el formato de la solicitud o usuario/contraseña incorrectos.
-- **500 Internal Server Error:** Error interno al generar el token de autenticación.
+| Código | Descripción                                            |
+|--------|--------------------------------------------------------|
+| 400    | Error en el formato de la solicitud o usuario/contraseña incorrectos. |
+| 500    | Error interno al generar el token de autenticación. |
+
 
 ---
 
 ### 1. Eliminar cuenta de usuario
 
-- **URL:** `/delete-account`
+- **Endpoint:** `/delete-account`
 - **Método:** `DELETE`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -90,7 +96,7 @@ No se requiere un cuerpo para esta solicitud.
 
 ### Actualizar datos del usuario
 
-- **URL:** `/update-user`
+- **Endpoint:** `/update-user`
 - **Método:** `PUT`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -140,7 +146,7 @@ Permite a un usuario autenticado actualizar sus datos personales, como su nombre
 
 ### Actualizar Contraseña del Usuario
 
-- **URL:** `/update-password`
+- **Endpoint:** `/update-password`
 - **Método:** `PUT`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -184,7 +190,7 @@ Este endpoint permite a un usuario autenticado actualizar su contraseña de form
 
 ### Obtener Todas las Tareas del Usuario
 
-- **URL:** `/tasks`
+- **Endpoint:** `/tasks`
 - **Método:** `GET`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -220,7 +226,7 @@ No se requiere un cuerpo para esta solicitud.
 
 ### Obtener una Tarea Específica
 
-- **URL:** `/tasks/{id}`
+- **Endpoint:** `/tasks/{id}`
 - **Método:** `GET`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -257,7 +263,7 @@ No se requiere un cuerpo para esta solicitud.
 
 ### Crear una Nueva Tarea
 
-- **URL:** `/tasks`
+- **Endpoint:** `/tasks`
 - **Método:** `POST`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -307,7 +313,7 @@ Este endpoint permite crear una nueva tarea asociada al usuario autenticado.
 
 ### Eliminar una Tarea
 
-- **URL:** `/tasks/{id}`
+- **Endpoint:** `/tasks/{id}`
 - **Método:** `DELETE`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -335,7 +341,7 @@ Elimina una tarea específica perteneciente al usuario autenticado.
 
 ### Actualizar una Tarea
 
-- **URL:** `/tasks/{id}`
+- **Endpoint:** `/tasks/{id}`
 - **Método:** `PUT`
 - **Middleware:** `CheckJwt` (Requiere autenticación JWT)
 
@@ -385,10 +391,3 @@ Permite actualizar los detalles de una tarea específica.
   "updated_at": "2024-01-02T12:00:00Z"
 }
 ```
-
-
-### Notas Adicionales
-
-- Todos los endpoints de la API requieren que las solicitudes estén formateadas en JSON.
-- Las respuestas exitosas están acompañadas de un token JWT, que se debe usar para autenticar solicitudes posteriores a otros endpoints de la API.
-
