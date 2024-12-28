@@ -210,14 +210,25 @@ No se requiere un cuerpo para esta solicitud.
 #### Ejemplo de Respuesta:
 ```json
 [
-  {
-    "id": 1,
-    "title": "Tarea 1",
-    "description": "Descripción de la tarea 1",
+ {
+    "ID": 1,
+    "CreatedAt": "2024-12-28T00:41:07.98725-03:00",
+    "UpdatedAt": "2024-12-28T00:41:07.98725-03:00",
+    "DeletedAt": null,
+    "title": "App Fix 1",
+    "description": "Is boring",
     "done": false,
-    "user_id": 1,
-    "created_at": "2024-01-01T12:00:00Z",
-    "updated_at": "2024-01-01T12:00:00Z"
+    "user_id": 6
+  },
+  {
+    "ID": 2,
+    "CreatedAt": "2024-12-28T00:42:00.127492-03:00",
+    "UpdatedAt": "2024-12-28T00:42:00.127492-03:00",
+    "DeletedAt": null,
+    "title": "App Fix 2",
+    "description": "Is boring",
+    "done": false,
+    "user_id": 6
   }
 ]
 ```
