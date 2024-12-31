@@ -21,7 +21,9 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var updatedTask models.Task
+
 	err := json.NewDecoder(r.Body).Decode(&updatedTask)
+
 	if err != nil {
 		http.Error(w, "Error al decodificar la solicitud: "+err.Error(), http.StatusBadRequest)
 		return
@@ -34,8 +36,10 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	task.Title = updatedTask.Title
 	task.Description = updatedTask.Description
+	task.Done = updatedTask.Done
 
 	err = db.UpdateTask(&task)
+
 	if err != nil {
 		http.Error(w, "Error al actualizar la tarea: "+err.Error(), http.StatusInternalServerError)
 		return

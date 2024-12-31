@@ -22,7 +22,7 @@ func main() {
 	router.HandleFunc("/login", routes.Login).Methods("POST")
 	router.HandleFunc("/signup", routes.SignUp).Methods("POST")
 	router.HandleFunc("/user-data", middleware.CheckJwt(routes.GetUserData)).Methods("GET")
-	router.HandleFunc("/delete-accout", middleware.CheckJwt(routes.DeleteUserAccout)).Methods("DELETE")
+	router.HandleFunc("/delete-account", middleware.CheckJwt(routes.DeleteUserAccout)).Methods("DELETE")
 	router.HandleFunc("/update-user", middleware.CheckJwt(routes.UpdateUser)).Methods("PUT")
 	router.HandleFunc("/update-password", middleware.CheckJwt(routes.UpdateUserPassword)).Methods("PUT")
 
