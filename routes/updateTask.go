@@ -12,18 +12,14 @@ import (
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	// Extraer el ID de la tarea de los parámetros de la URL
 	params := mux.Vars(r)
 	task := db.GetTaskById(params["id"])
 
-	// Verificar si existe el ID en la tabla
-	// Golang devuelve 0 por defecto, es decir, todos los campos con ZERO value
 	if task.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	// Decodificar la nueva información de la tarea del cuerpo de la solicitud
 	var updatedTask models.Task
 	err := json.NewDecoder(r.Body).Decode(&updatedTask)
 	if err != nil {
@@ -31,24 +27,19 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar que title y description no estén vacíos
 	if updatedTask.Title == "" || updatedTask.Description == "" {
 		http.Error(w, "El título y la descripción son obligatorios", http.StatusBadRequest)
 		return
 	}
 
-	// Actualizar la información de la tarea
 	task.Title = updatedTask.Title
 	task.Description = updatedTask.Description
-	// También puedes actualizar otros campos según sea necesario
 
-	// Guardar la tarea actualizada en la base de datos
 	err = db.UpdateTask(&task)
 	if err != nil {
 		http.Error(w, "Error al actualizar la tarea: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Responder con la tarea actualizada
 	json.NewEncoder(w).Encode(task)
 }

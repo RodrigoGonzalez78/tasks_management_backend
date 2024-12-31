@@ -11,13 +11,11 @@ import (
 
 func GetTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
-	//Extraemos el parametro que nos indica el id de usuario
+
 	params := mux.Vars(r)
 
 	task = db.GetTaskById(params["id"])
 
-	//Verificamos si existe el id en la tabla
-	//Golang devuelve 0 por defecto, es decir todos los campos con ZERO value
 	if task.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		return

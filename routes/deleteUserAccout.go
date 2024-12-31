@@ -17,8 +17,6 @@ func DeleteUserAccout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Borramos las notas de la base de datos pertenecientes al usuario
-
 	var tasks []models.Task = db.GetAllTasksByUserId(user.ID)
 
 	for _, v := range tasks {

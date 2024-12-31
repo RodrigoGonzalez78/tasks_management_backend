@@ -135,12 +135,14 @@ Permite a un usuario autenticado actualizar sus datos personales, como su nombre
 #### Ejemplo de Respuesta:
 ```json
 {
-  "id": 1,
+  "ID": 1,
+  "CreatedAt": "2024-12-27T00:37:17.859405-03:00",
+  "UpdatedAt": "2024-12-27T00:37:17.859405-03:00",
+  "DeletedAt": null,
   "first_name": "Juan",
   "last_name": "Pérez",
-  "email": "juan.perez@example.com",
-  "created_at": "2024-01-01T12:00:00Z",
-  "updated_at": "2024-12-03T14:00:00Z"
+  "email": "algo@gmail.com",
+  "password": ""
 }
 ```
 
@@ -218,7 +220,7 @@ No se requiere un cuerpo para esta solicitud.
     "title": "App Fix 1",
     "description": "Is boring",
     "done": false,
-    "user_id": 6
+    "user_id": 1
   },
   {
     "ID": 2,
@@ -228,7 +230,7 @@ No se requiere un cuerpo para esta solicitud.
     "title": "App Fix 2",
     "description": "Is boring",
     "done": false,
-    "user_id": 6
+    "user_id": 1
   }
 ]
 ```
@@ -267,7 +269,7 @@ No se requiere un cuerpo para esta solicitud.
     "title": "App Fix 1",
     "description": "Is boring",
     "done": false,
-    "user_id": 6
+    "user_id": 1
 }
 ```
 
@@ -315,8 +317,8 @@ Este endpoint permite crear una nueva tarea asociada al usuario autenticado.
     "CreatedAt": "2024-12-28T00:41:07.98725-03:00",
     "UpdatedAt": "2024-12-28T00:41:07.98725-03:00",
     "DeletedAt": null,
-    "title": "App Fix 1",
-    "description": "Is boring",
+    "title": "Comprar alimentos",
+    "description": "Comprar frutas, verduras y leche",
     "done": false,
     "user_id": 6
 }
@@ -399,9 +401,9 @@ Permite actualizar los detalles de una tarea específica.
     "CreatedAt": "2024-12-28T00:41:07.98725-03:00",
     "UpdatedAt": "2024-12-28T00:41:07.98725-03:00",
     "DeletedAt": null,
-    "title": "App Fix 1",
-    "description": "Is boring",
+    "title": "Actualizar informe",
+    "description": "Completar la sección de análisis de datos",
     "done": false,
-    "user_id": 6
+    "user_id": 1
 }
 ```

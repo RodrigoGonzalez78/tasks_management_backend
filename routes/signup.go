@@ -20,7 +20,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar el formato del correo electrónico
 	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
 
 	if !emailRegex.MatchString(user.Email) {
@@ -28,7 +27,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar si el correo electrónico ya está en uso
 	usedEmail, err := db.CheckExistUser(user.Email)
 	if err != nil {
 		http.Error(w, "Error al verificar el correo electrónico: "+err.Error(), http.StatusInternalServerError)
@@ -40,13 +38,11 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar si la contraseña cumple con los criterios (por ejemplo, longitud mínima)
 	if len(user.Password) < 8 {
 		http.Error(w, "La contraseña debe tener al menos 8 caracteres", http.StatusBadRequest)
 		return
 	}
 
-	// Hash de la contraseña
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		http.Error(w, "Error al generar el hash de la contraseña: "+err.Error(), http.StatusInternalServerError)
@@ -54,12 +50,10 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Password = string(hashedPassword)
 
-	// Crear el usuario en la base de datos
 	if err := db.CreateUser(&user); err != nil {
 		http.Error(w, "Error al crear el usuario: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Devolver el usuario creado como respuesta
 	w.WriteHeader(http.StatusCreated)
 }
