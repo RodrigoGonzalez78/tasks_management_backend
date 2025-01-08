@@ -9,9 +9,8 @@ import (
 )
 
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
-	var task models.Task
 
-	//Extraemos el parametro que nos indica el id de usuario
+	var task models.Task
 	params := mux.Vars(r)
 
 	task = db.GetTaskById(params["id"])

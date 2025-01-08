@@ -9,7 +9,6 @@ import (
 	"github.com/RodrigoGonzalez78/tasks_management_backend/models"
 )
 
-// Crea una tarea nueva
 func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -20,7 +19,6 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar que title y description no estén vacíos
 	if task.Title == "" || task.Description == "" {
 		http.Error(w, "El título y la descripción son obligatorios", http.StatusBadRequest)
 		return

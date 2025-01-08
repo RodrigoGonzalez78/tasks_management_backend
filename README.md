@@ -2,7 +2,9 @@
 
 # API REST para Gestión de Tareas
 
-Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas y notas. A continuación, se describen los endpoints disponibles y los formatos de solicitud y respuesta.
+Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas y notas, cuenta con autenticacion con JWT. A continuación, se describen los endpoints disponibles y los formatos de solicitud y respuesta.
+
+Para correr la api simplemente se debe cambiar los valores de conexion de la base de datos, la tablas se generaran automaticamente por GORM.
 
 ## Endpoints
 
@@ -63,7 +65,7 @@ Esta API permite a los usuarios registrarse, iniciar sesión y gestionar sus tar
 | 400    | Error en el formato de la solicitud o usuario/contraseña incorrectos. |
 | 500    | Error interno al generar el token de autenticación. |
 
-
+ 
 ---
 
 ### 1. Eliminar cuenta de usuario
@@ -92,7 +94,40 @@ No se requiere un cuerpo para esta solicitud.
 }
 ```
 
+---
 
+### 1. Obtener Datos del Usuario
+
+- **Endpoint:** `/user-data`
+- **Método:** `GET`
+- **Middleware:** `CheckJwt` (Requiere autenticación JWT)
+
+#### Descripción:
+Este endpoint permite obtener toda la informacion de la cuenta del usuario
+
+#### Cuerpo de la solicitud:
+No se requiere un cuerpo para esta solicitud.
+
+#### Respuestas:
+
+| Código | Descripción                                            |
+|--------|--------------------------------------------------------|
+| 200    | Se obtuvo correctamente los datos                   |
+
+
+#### Ejemplo de Respuesta:
+```json
+{
+  "ID": 3,
+  "CreatedAt": "2024-12-26T23:36:28.953386-03:00",
+  "UpdatedAt": "2025-01-05T16:32:55.495696-03:00",
+  "DeletedAt": null,
+  "first_name": "Rodrigo",
+  "last_name": "Alejandro",
+  "email": "rodrigo@gmail.com",
+  "password": ""
+}
+```
 
 ### Actualizar datos del usuario
 

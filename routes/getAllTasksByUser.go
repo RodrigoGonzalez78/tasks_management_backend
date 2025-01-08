@@ -9,6 +9,9 @@ import (
 )
 
 func GetAllTaksByUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	tasks := db.GetAllTasksByUserId(jwtMetods.IDUser)
+
 	json.NewEncoder(w).Encode(&tasks)
 }
